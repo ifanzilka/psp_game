@@ -27,7 +27,7 @@ HEADERS = $(addprefix $(HEADER)/,gfx.h)
 OBJ_DIR = BIN/
 
 SRC_DIR	= src/
-SRCS = src/main.cpp
+SRCS = src/main.cpp src/gfx.cpp
 
 SRCS.O = $(addprefix $(OBJ_DIR),$(SRCS:.cpp=.o))
 
