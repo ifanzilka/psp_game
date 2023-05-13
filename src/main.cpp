@@ -45,7 +45,7 @@ int setupCallBacks()
 
 
 
-#include "gfx.h"
+#include <gfx.h>
 #include <pspge.h>
 #include <pspdisplay.h>
 #include <psputils.h>

@@ -1,4 +1,4 @@
-#include "gfx.h"
+#include <gfx.h>
 #include <pspge.h>
 #include <pspdisplay.h>
 
