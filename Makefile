@@ -31,13 +31,58 @@ SRCS = src/main.cpp src/gfx.cpp
 
 SRCS.O = $(addprefix $(OBJ_DIR),$(SRCS:.cpp=.o))
 
+
+
+
+
+ifndef PSP_EBOOT_TITLE
+PSP_EBOOT_TITLE = $(TARGET)
+endif
+
+ifndef PSP_EBOOT_SFO
+PSP_EBOOT_SFO = PARAM.SFO
+endif
+
+ifndef PSP_EBOOT_ICON
+PSP_EBOOT_ICON = NULL
+endif
+
+ifndef PSP_EBOOT_ICON1
+PSP_EBOOT_ICON1 = NULL
+endif
+
+ifndef PSP_EBOOT_UNKPNG
+PSP_EBOOT_UNKPNG = NULL
+endif
+
+ifndef PSP_EBOOT_PIC1
+PSP_EBOOT_PIC1 = NULL
+endif
+
+ifndef PSP_EBOOT_SND0
+PSP_EBOOT_SND0 = NULL
+endif
+
+ifndef PSP_EBOOT_PSAR
+PSP_EBOOT_PSAR = NULL
+endif
+
+ifndef PSP_EBOOT
+PSP_EBOOT = EBOOT.PBP
+endif
+
+
+
+
+
+
 ELF_FILE = Tutorial.elf
 PRX_FILE = Tutorial.prx
 SFO_FILE = PARAM.SFO
 NAME_APP = 'Our Application'
-NAME = EBOOT.PBP
+#NAME = EBOOT.PBP
 
-all:  $(NAME)
+all:  $(PSP_EBOOT)
 #	$(GCC_CPP) $(INCLUDES_CPP) $(CPP_FLAGS) -c -o main.o $(SRCS)
 #	$(GCC) $(INCLUDES_C) $(CFLAGS) $(LIBIRES_C) -specs=$(PSP_SDK_LIB)/prxspecs -Wl,-q,-T$(PSP_SDK_LIB)/linkfile.prx main.o $(PSP_SDK_LIB)/prxexports.o $(PSP_FLAGS) -o Tutorial.elf#
 	
@@ -50,12 +95,12 @@ all:  $(NAME)
 
 
 
-$(NAME): $(OBJ_DIR)	$(SRCS.O) $(HEADERS) $(ELF_FILE) $(PRX_FILE) $(SFO_FILE)
-	$(PATH_PSP_DEV)/bin/pack-pbp $(NAME) $(SFO_FILE) NULL \
-				NULL NULL NULL \
-				NULL $(PRX_FILE) NULL
+$(PSP_EBOOT): $(OBJ_DIR)	$(SRCS.O) $(HEADERS) $(ELF_FILE) $(PRX_FILE) $(PSP_EBOOT_SFO)
+	$(PATH_PSP_DEV)/bin/pack-pbp $(PSP_EBOOT) $(PSP_EBOOT_SFO) $(PSP_EBOOT_ICON) \
+				$(PSP_EBOOT_ICON1) $(PSP_EBOOT_UNKPNG) $(PSP_EBOOT_PIC1) \
+				$(PSP_EBOOT_SND0) $(PRX_FILE) $(PSP_EBOOT_PSAR)
 		
-	@echo "$(F_GREEN) $(NAME) CREATE! $(F_NONE)"
+	@echo "$(F_GREEN) $(PSP_EBOOT) CREATE! $(F_NONE)"
 
 
 $(ELF_FILE):
@@ -67,9 +112,9 @@ $(PRX_FILE): $(ELF_FILE)
 	$(PATH_PSP_DEV)/bin/psp-prxgen $(ELF_FILE) $(PRX_FILE)
 	@echo "$(F_YELLOW) $(PRX_FILE) CREATE! $(F_NONE)"
 
-$(SFO_FILE):
-	$(PATH_PSP_DEV)/bin/mksfoex -d MEMSIZE=1 $(NAME_APP) $(SFO_FILE)
-	@echo "$(F_YELLOW) $(SFO_FILE) CREATE! $(F_NONE)"
+$(PSP_EBOOT_SFO):
+	$(PATH_PSP_DEV)/bin/mksfoex -d MEMSIZE=1 $(NAME_APP) $(PSP_EBOOT_SFO)
+	@echo "$(F_YELLOW) $(PSP_EBOOT_SFO) CREATE! $(F_NONE)"
 
 
 ## creare obj dir
@@ -82,16 +127,21 @@ $(SRCS.O):  $(OBJ_DIR)%.o:%.cpp  $(HEADERS)
 	$(GCC_CPP) $(INCLUDES_CPP) $(CPP_FLAGS) -c $< -o $@
 	@echo "$(F_BLUE)Object files psp in ready! $(F_NONE)"
 
+config:
+	
+	include $(PATH_PSP_DEV)/psp/sdk/lib/build.mak
+#	bash $(PATH_PSP_DEV)/bin/psp-config --pspsdk-path
+
 clean:
 	rm -rf $(OBJ_DIR)
 	@echo "$(F_GREEN)Object files psp delete! $(F_NONE)"
 	rm -rf $(ELF_FILE)
 	rm -rf $(PRX_FILE)
-	rm -rf $(SFO_FILE)
+	rm -rf $(PSP_EBOOT_SFO)
 
 fclean:		clean
-			$(RM) $(NAME)
-			@echo "$(F_GREEN)Delete $(NAME) FCleaned! $(F_NONE)"
+			$(RM) $(PSP_EBOOT)
+			@echo "$(F_GREEN)Delete $(PSP_EBOOT) FCleaned! $(F_NONE)"
 
 re:	fclean all
 
