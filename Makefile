@@ -32,7 +32,7 @@ SRCS = src/main.cpp src/gfx.cpp
 SRCS.O = $(addprefix $(OBJ_DIR),$(SRCS:.cpp=.o))
 
 
-PSP_EBOOT_ICON  =   media_files/ICON0.PNG
+PSP_EBOOT_ICON  =   media_files/rick_morty.png
 
 
 ifndef PSP_EBOOT_TITLE
